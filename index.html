@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GPAT Gyan | Festivals</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;700;800&display=swap');
+    
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Hind Siliguri', sans-serif;
+      background: linear-gradient(135deg, #fff6e6 0%, #ffdfb8 100%);
+      overflow: hidden;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      perspective: 1000px;
+    }
+    
+    .festival-container {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+    }
+    
+    .greeting-box {
+      position: relative;
+      text-align: center;
+      background: rgba(255, 255, 255, 0.85);
+      padding: 3rem 5rem;
+      border-radius: 20px;
+      box-shadow: 0 10px 40px rgba(255, 105, 0, 0.3);
+      z-index: 100;
+      backdrop-filter: blur(5px);
+      border: 2px solid rgba(255, 165, 0, 0.3);
+      transform-style: preserve-3d;
+      animation: float 8s ease-in-out infinite, glowBox 4s infinite alternate;
+      transition: all 0.5s ease;
+    }
+    
+    .greeting-box:hover {
+      transform: scale(1.02) rotateY(5deg);
+      box-shadow: 0 15px 50px rgba(255, 105, 0, 0.4);
+    }
+    
+    h1 {
+      font-size: 4.5rem;
+      color: #e63946;
+      margin: 0;
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+      animation: colorPulse 5s infinite alternate;
+      letter-spacing: 2px;
+      position: relative;
+      display: inline-block;
+    }
+    
+    h1::after {
+      content: '';
+      position: absolute;
+      bottom: -10px;
+      left: 0;
+      width: 100%;
+      height: 3px;
+      background: linear-gradient(90deg, #e63946, #ff9e00);
+      transform: scaleX(0);
+      transform-origin: left;
+      animation: underlineGrow 3s infinite alternate;
+    }
+    
+    .subtitle {
+      font-size: 2.2rem;
+      color: #1a759f;
+      margin: 1.5rem 0;
+      text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+      animation: fadeInUp 2s ease both;
+    }
+    
+    .message {
+      font-size: 1.8rem;
+      color: #333;
+      line-height: 1.8;
+      margin-bottom: 2rem;
+      animation: fadeIn 3s ease both;
+    }
+    
+    .highlight {
+      color: #e63946;
+      font-weight: 700;
+      text-shadow: 0 0 5px rgba(230, 57, 70, 0.3);
+      position: relative;
+      display: inline-block;
+    }
+    
+    .highlight::before {
+      content: '';
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      background: rgba(255, 215, 0, 0.2);
+      top: 0;
+      left: 0;
+      border-radius: 50%;
+      transform: scale(0.9);
+      animation: highlightPulse 2s infinite alternate;
+      z-index: -1;
+    }
+    
+    /* Animations */
+    @keyframes float {
+      0%, 100% { transform: translateY(0) rotateX(0deg) rotateY(0deg); }
+      50% { transform: translateY(-20px) rotateX(5deg) rotateY(5deg); }
+    }
+    
+    @keyframes glowBox {
+      0% { box-shadow: 0 10px 30px rgba(255, 105, 0, 0.3); }
+      100% { box-shadow: 0 15px 50px rgba(255, 105, 0, 0.5); }
+    }
+    
+    @keyframes colorPulse {
+      0% { color: #e63946; }
+      50% { color: #ff6b35; }
+      100% { color: #ff9e00; }
+    }
+    
+    @keyframes underlineGrow {
+      0% { transform: scaleX(0); }
+      100% { transform: scaleX(1); }
+    }
+    
+    @keyframes highlightPulse {
+      0% { transform: scale(0.9); opacity: 0.5; }
+      100% { transform: scale(1.1); opacity: 0.8; }
+    }
+    
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+    
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    
+    /* Confetti */
+    .confetti {
+      position: absolute;
+      width: 15px;
+      height: 15px;
+      opacity: 0;
+      animation: confettiFall 5s linear infinite;
+      z-index: 1;
+    }
+    
+    @keyframes confettiFall {
+      0% { 
+        transform: translateY(-100px) rotate(0deg) translateX(0);
+        opacity: 1;
+      }
+      100% { 
+        transform: translateY(100vh) rotate(360deg) translateX(100px);
+        opacity: 0;
+      }
+    }
+    
+    /* Floating decorations */
+    .floating-deco {
+      position: absolute;
+      font-size: 2rem;
+      opacity: 0.7;
+      animation: floatAround 15s infinite linear;
+      z-index: 0;
+    }
+    
+    @keyframes floatAround {
+      0% { 
+        transform: translate(0, 0) rotate(0deg) scale(1);
+        opacity: 0;
+      }
+      10% { opacity: 0.7; }
+      50% { transform: translate(100px, -50px) rotate(180deg) scale(1.2); }
+      90% { opacity: 0.7; }
+      100% { 
+        transform: translate(200px, -100px) rotate(360deg) scale(1);
+        opacity: 0;
+      }
+    }
+    
+    /* Blooming flowers */
+    .flower {
+      position: absolute;
+      font-size: 2rem;
+      opacity: 0;
+      animation: bloom 8s infinite ease-in-out;
+    }
+    
+    @keyframes bloom {
+      0%, 100% { transform: scale(0); opacity: 0; }
+      50% { transform: scale(1); opacity: 0.8; }
+    }
+    
+    /* Button */
+    .wish-btn {
+      background: linear-gradient(45deg, #e63946, #ff9e00);
+      border: none;
+      color: white;
+      padding: 15px 40px;
+      font-size: 1.5rem;
+      border-radius: 50px;
+      cursor: pointer;
+      box-shadow: 0 5px 15px rgba(230, 57, 70, 0.4);
+      transition: all 0.3s ease;
+      animation: pulse 2s infinite;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .wish-btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 20px rgba(230, 57, 70, 0.6);
+    }
+    
+    .wish-btn::after {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: rgba(255, 255, 255, 0.2);
+      transform: rotate(45deg);
+      animation: shine 3s infinite;
+    }
+    
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+    }
+    
+    @keyframes shine {
+      0% { left: -100%; }
+      20% { left: 100%; }
+      100% { left: 100%; }
+    }
+  </style>
+</head>
+<body>
+  <div class="festival-container" id="container">
+    <!-- Confetti -->
+    <div id="confetti"></div>
+    
+    <!-- Floating decorations -->
+    <div id="floating-decorations"></div>
+    
+    <!-- Blooming flowers -->
+    <div id="flowers"></div>
+    
+    <!-- Main greeting -->
+    <div class="greeting-box">
+      <h1>শুভ নববর্ষ ১৪৩২</h1>
+      <div class="subtitle">পহেলা বৈশাখের শুভেচ্ছা</div>
+      <div class="message">
+        <span class="highlight">নতুন বছরের</span> এই শুভ প্রভাতে<br>
+        আপনার জীবন <span class="highlight">হোক ফুলে ফলে</span> ভরপুর<br>
+        সকল <span class="highlight">দুঃখ</span> কেটে যাক দূরে<br>
+        <span class="highlight">আনন্দ</span> আর <span class="highlight">সমৃদ্ধি</span> আসুক ঘরে!
+      </div>
+      <button class="wish-btn">শুভেচ্ছা গ্রহণ করুন</button>
+    </div>
+  </div>
+
+  <script>
+    // Create confetti
+    function createConfetti() {
+      const container = document.getElementById('confetti');
+      const colors = ['#e63946', '#ff9e00', '#1a759f', '#76c893', '#ffd166'];
+      const symbols = ['❀', '✿', '❁', '★', '✦', '✧', '♥'];
+      
+      for (let i = 0; i < 100; i++) {
+        const confetti = document.createElement('div');
+        confetti.className = 'confetti';
+        
+        // Random properties
+        const size = Math.random() * 10 + 10;
+        const posX = Math.random() * window.innerWidth;
+        const duration = Math.random() * 5 + 3;
+        const delay = Math.random() * 5;
+        const color = colors[Math.floor(Math.random() * colors.length)];
+        const symbol = symbols[Math.floor(Math.random() * symbols.length)];
+        const rotate = Math.random() * 360;
+        
+        // Apply properties
+        confetti.style.left = `${posX}px`;
+        confetti.style.fontSize = `${size}px`;
+        confetti.style.animationDuration = `${duration}s`;
+        confetti.style.animationDelay = `${delay}s`;
+        confetti.style.color = color;
+        confetti.style.transform = `rotate(${rotate}deg)`;
+        confetti.textContent = symbol;
+        
+        container.appendChild(confetti);
+      }
+    }
+    
+    // Create floating decorations
+    function createFloatingDecorations() {
+      const container = document.getElementById('floating-decorations');
+      const decorations = ['❀', '✿', '❁', '★', '✦', '✧', '♥', 'শুভ', 'নববর্ষ', '১৪৩১'];
+      
+      for (let i = 0; i < 30; i++) {
+        const deco = document.createElement('div');
+        deco.className = 'floating-deco';
+        
+        // Random properties
+        const posX = Math.random() * window.innerWidth;
+        const posY = Math.random() * window.innerHeight;
+        const duration = Math.random() * 15 + 10;
+        const delay = Math.random() * 10;
+        const size = Math.random() * 1 + 0.5;
+        const decoration = decorations[Math.floor(Math.random() * decorations.length)];
+        const color = `hsl(${Math.random() * 60 + 0}, 80%, 60%)`;
+        
+        // Apply properties
+        deco.style.left = `${posX}px`;
+        deco.style.top = `${posY}px`;
+        deco.style.animationDuration = `${duration}s`;
+        deco.style.animationDelay = `${delay}s`;
+        deco.style.fontSize = `${size}rem`;
+        deco.style.color = color;
+        deco.textContent = decoration;
+        
+        container.appendChild(deco);
+      }
+    }
+    
+    // Create blooming flowers
+    function createFlowers() {
+      const container = document.getElementById('flowers');
+      const flowers = ['❀', '✿', '❁', '🌸', '🌺', '🏵️'];
+      
+      for (let i = 0; i < 20; i++) {
+        const flower = document.createElement('div');
+        flower.className = 'flower';
+        
+        // Random properties
+        const posX = Math.random() * window.innerWidth;
+        const posY = Math.random() * window.innerHeight;
+        const duration = Math.random() * 8 + 5;
+        const delay = Math.random() * 10;
+        const size = Math.random() * 2 + 1;
+        const flowerType = flowers[Math.floor(Math.random() * flowers.length)];
+        const color = `hsl(${Math.random() * 60 + 0}, 80%, 60%)`;
+        
+        // Apply properties
+        flower.style.left = `${posX}px`;
+        flower.style.top = `${posY}px`;
+        flower.style.animationDuration = `${duration}s`;
+        flower.style.animationDelay = `${delay}s`;
+        flower.style.fontSize = `${size}rem`;
+        flower.style.color = color;
+        flower.textContent = flowerType;
+        
+        container.appendChild(flower);
+      }
+    }
+    
+    // Button interaction
+    function setupButton() {
+      const btn = document.querySelector('.wish-btn');
+      btn.addEventListener('click', () => {
+        // Create burst effect
+        for (let i = 0; i < 30; i++) {
+          const burst = document.createElement('div');
+          burst.className = 'confetti';
+          burst.style.left = `${btn.offsetLeft + btn.offsetWidth/2}px`;
+          burst.style.top = `${btn.offsetTop + btn.offsetHeight/2}px`;
+          burst.style.animationDuration = `${Math.random() * 2 + 1}s`;
+          burst.style.color = `hsl(${Math.random() * 60 + 0}, 80%, 60%)`;
+          burst.textContent = ['★', '✿', '❀', '♥'][Math.floor(Math.random() * 4)];
+          document.getElementById('confetti').appendChild(burst);
+          
+          // Remove after animation
+          setTimeout(() => {
+            burst.remove();
+          }, 1000);
+        }
+        
+        // Change button text temporarily
+        btn.textContent = 'ধন্যবাদ!';
+        setTimeout(() => {
+          btn.textContent = 'শুভেচ্ছা গ্রহণ করুন';
+        }, 1500);
+      });
+    }
+    
+    // Initialize all effects
+    window.onload = function() {
+      createConfetti();
+      createFloatingDecorations();
+      createFlowers();
+      setupButton();
+      
+      // Refresh flowers periodically
+      setInterval(() => {
+        document.getElementById('flowers').innerHTML = '';
+        createFlowers();
+      }, 10000);
+    };
+    
+    // Make responsive
+    window.onresize = function() {
+      document.getElementById('confetti').innerHTML = '';
+      document.getElementById('floating-decorations').innerHTML = '';
+      document.getElementById('flowers').innerHTML = '';
+      
+      createConfetti();
+      createFloatingDecorations();
+      createFlowers();
+    };
+  </script>
+</body>
+</html>
