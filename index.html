@@ -253,6 +253,93 @@
       100% { left: 100%; }
     }
     
+    /* Enhanced Flower burst styles */
+    .flower-burst {
+      position: absolute;
+      pointer-events: none;
+      z-index: 1000;
+      width: 0;
+      height: 0;
+    }
+    
+    .flower-particle {
+      position: absolute;
+      font-size: 1.5rem;
+      opacity: 0;
+      animation: flowerFly 2s ease-out forwards;
+      transform-origin: center;
+      z-index: 1001;
+    }
+    
+    .smile-particle {
+      position: absolute;
+      font-size: 1.8rem;
+      opacity: 0;
+      animation: smileFloat 3s ease-out forwards;
+      transform-origin: center;
+      z-index: 1001;
+    }
+    
+    @keyframes flowerFly {
+      0% {
+        transform: translate(0, 0) scale(0.2) rotate(0deg);
+        opacity: 1;
+        filter: brightness(1.5);
+      }
+      50% {
+        transform: translate(var(--tx), var(--ty)) scale(1.5) rotate(180deg);
+        opacity: 1;
+        filter: brightness(2);
+      }
+      100% {
+        transform: translate(var(--tx2), var(--ty2)) scale(0.5) rotate(360deg);
+        opacity: 0;
+        filter: brightness(1);
+      }
+    }
+    
+    @keyframes smileFloat {
+      0% {
+        transform: translate(0, 0) scale(0.2);
+        opacity: 0;
+      }
+      20% {
+        transform: translate(var(--tx), var(--ty)) scale(1.2);
+        opacity: 1;
+      }
+      100% {
+        transform: translate(var(--tx2), var(--ty2)) scale(0.8);
+        opacity: 0;
+      }
+    }
+    
+    /* Bomb blast effect */
+    @keyframes bombExplode {
+      0% {
+        transform: scale(0.1);
+        opacity: 1;
+      }
+      50% {
+        transform: scale(1.5);
+        opacity: 0.8;
+      }
+      100% {
+        transform: scale(2);
+        opacity: 0;
+      }
+    }
+    
+    .bomb-effect {
+      position: absolute;
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(255,200,0,0.8) 0%, rgba(255,100,0,0) 70%);
+      z-index: 999;
+      animation: bombExplode 0.5s ease-out forwards;
+      pointer-events: none;
+    }
+    
     /* Mobile optimizations */
     @media (max-width: 768px) {
       .greeting-box {
@@ -271,6 +358,14 @@
       
       .wish-btn {
         padding: 10px 25px;
+      }
+      
+      .flower-particle {
+        font-size: 1.2rem;
+      }
+      
+      .smile-particle {
+        font-size: 1.5rem;
       }
     }
     
@@ -385,43 +480,176 @@
       }
     }
     
+    // Create enhanced flower burst with bomb effect and smiles
+    function createFlowerBurst(x, y) {
+      // Create bomb blast effect
+      const bomb = document.createElement('div');
+      bomb.className = 'bomb-effect';
+      bomb.style.left = `${x - 50}px`;
+      bomb.style.top = `${y - 50}px`;
+      document.body.appendChild(bomb);
+      
+      // Create burst container
+      const burstContainer = document.createElement('div');
+      burstContainer.className = 'flower-burst';
+      burstContainer.style.left = `${x}px`;
+      burstContainer.style.top = `${y}px`;
+
+    const flowerTypes = [
+    '❀', '✿', '❁', '✾', '❃', '❋', '✽', '🌸', 
+    '🌺', '🌻', '🌼', '🌷', '🌹', '💐', '🏵️', '⚘',
+    '✻', '✼', '✺', '✹', '✷', '✶', '✵', '✴️',
+    '❇️', '✳️', '❈', '❉', '❊', '☘️', '🍀', '🌱',
+    '🌿', '☘️', '🍃', '🍂', '🍁', '🌾', '🌵', '🌴'
+    ];
+
+    const smileTypes = [
+    '😊', '😄', '😃', '😁', '🤩', '🥳', '😍', '🤗',
+    '😻', '👏', '👍', '🎊', '🎉', '✨', '💫', '🌟',
+    '⭐', '🌠', '☀️', '🌞', '🌝', '🌛', '🌜',
+    '💥', '⚡', '💯', '❤️', '🧡', '💛', '💚', '💙',
+    '💜', '🤎', '🖤', '🤍', '💝', '💖', '💗', '💓'
+    ];
+
+    const colors = [
+    // Reds/Pinks
+    '#e63946', '#f72585', '#ef476f', '#ff006e', '#ff70a6', '#ff0a54', '#ff477e',
+    // Oranges
+    '#ff9e00', '#ff9505', '#ffaa5a', '#ff7b25', '#ff5e1a', '#ff9f1c', '#ffbf69',
+    // Yellows
+    '#ffd166', '#ffd700', '#f9c74f', '#f4a261', '#f8961e', '#f9844a', '#f3722c',
+    // Greens
+    '#76c893', '#90be6d', '#43aa8b', '#4d908e', '#577590', '#4895ef', '#4cc9f0',
+    // Blues
+    '#1a759f', '#3a0ca3', '#4361ee', '#3f37c9', '#4895ef', '#4cc9f0', '#56cfe1',
+    // Purples
+    '#7209b7', '#b5179e', '#560bad', '#480ca8', '#3a0ca3', '#3f37c9', '#4361ee',
+    // Special colors
+    '#06d6a0', '#06d6a0', '#118ab2', '#073b4c', '#ffd60a', '#ffc300', '#8338ec'
+    ];
+
+    // Additional decorative elements
+    const decorativeElements = [
+    '✧', '✦', '✷', '✶', '✵', '✴', '✳', '✲',
+    '✱', '❊', '❉', '❈', '❇', '✼', '✻', '✺',
+    '✹', '✸', '✷', '✶', '✵', '✴', '✳', '✲',
+    '✱', '✰', '★', '☆', '✮', '✭', '✬', '✫',
+    '✪', '✩', '✯', '✡', '☸', '☪', '☯', '☮',
+    '☢', '☣', '☠', '☤', '☥', '☦', '☧', '☨',
+    '☩', '☫', '☬', '☭', '♔', '♕', '♖', '♗',
+    '♘', '♙', '♚', '♛', '♜', '♝', '♞', '♟'
+    ];
+           
+      // Create 50 flower particles
+      for (let i = 0; i < 50; i++) {
+        const particle = document.createElement('div');
+        particle.className = 'flower-particle';
+        
+        // Random angle and distance (two phases for more dynamic movement)
+        const angle = Math.random() * Math.PI * 2;
+        const distance1 = 30 + Math.random() * 70;
+        const distance2 = 100 + Math.random() * 100;
+        const tx = Math.cos(angle) * distance1;
+        const ty = Math.sin(angle) * distance1;
+        const tx2 = Math.cos(angle) * distance2;
+        const ty2 = Math.sin(angle) * distance2;
+        
+        // Random size and rotation
+        const size = 0.8 + Math.random() * 1.5;
+        const rotation = Math.random() * 360;
+        
+        // Random flower and color
+        const flower = flowerTypes[Math.floor(Math.random() * flowerTypes.length)];
+        const color = colors[Math.floor(Math.random() * colors.length)];
+        
+        // Random delay
+        const delay = Math.random() * 0.3;
+        
+        particle.style.cssText = `
+          --tx: ${tx}px;
+          --ty: ${ty}px;
+          --tx2: ${tx2}px;
+          --ty2: ${ty2}px;
+          font-size: ${size}rem;
+          color: ${color};
+          animation-delay: ${delay}s;
+          transform: rotate(${rotation}deg);
+        `;
+        particle.textContent = flower;
+        
+        burstContainer.appendChild(particle);
+      }
+      
+      // Create 20 smile particles
+      for (let i = 0; i < 20; i++) {
+        const smile = document.createElement('div');
+        smile.className = 'smile-particle';
+        
+        // Random angle and distance (two phases)
+        const angle = Math.random() * Math.PI * 2;
+        const distance1 = 40 + Math.random() * 60;
+        const distance2 = 80 + Math.random() * 80;
+        const tx = Math.cos(angle) * distance1;
+        const ty = Math.sin(angle) * distance1;
+        const tx2 = Math.cos(angle + 0.3) * distance2;
+        const ty2 = Math.sin(angle + 0.3) * distance2;
+        
+        // Random size
+        const size = 1 + Math.random() * 1.5;
+        
+        // Random smile and color
+        const smiley = smileTypes[Math.floor(Math.random() * smileTypes.length)];
+        const color = colors[Math.floor(Math.random() * colors.length)];
+        
+        // Random delay
+        const delay = 0.1 + Math.random() * 0.4;
+        
+        smile.style.cssText = `
+          --tx: ${tx}px;
+          --ty: ${ty}px;
+          --tx2: ${tx2}px;
+          --ty2: ${ty2}px;
+          font-size: ${size}rem;
+          color: ${color};
+          animation-delay: ${delay}s;
+        `;
+        smile.textContent = smiley;
+        
+        burstContainer.appendChild(smile);
+      }
+      
+      document.body.appendChild(burstContainer);
+      
+      // Remove after animation completes
+      setTimeout(() => {
+        burstContainer.remove();
+        bomb.remove();
+      }, 3000);
+    }
+    
     // Button interaction
     function setupButton() {
       const btn = document.querySelector('.wish-btn');
-      btn.addEventListener('click', function() {
-        // Temporary visual feedback
-        this.style.transform = 'scale(0.95)';
+      btn.addEventListener('click', function(e) {
+        // Get button position
+        const rect = btn.getBoundingClientRect();
+        const x = rect.left + rect.width / 2;
+        const y = rect.top + rect.height / 2;
+        
+        // Create enhanced flower burst with bomb effect
+        createFlowerBurst(x, y);
+        
+        // Button press effect
+        this.style.transform = 'scale(0.9)';
+        this.style.boxShadow = '0 2px 10px rgba(230, 57, 70, 0.6)';
         setTimeout(() => {
           this.style.transform = 'scale(1)';
+          this.style.boxShadow = '0 5px 15px rgba(230, 57, 70, 0.4)';
         }, 200);
-        
-        // Create mini burst effect
-        const burstContainer = document.createElement('div');
-        burstContainer.style.position = 'absolute';
-        burstContainer.style.pointerEvents = 'none';
-        burstContainer.style.left = `${btn.getBoundingClientRect().left + btn.offsetWidth/2}px`;
-        burstContainer.style.top = `${btn.getBoundingClientRect().top + btn.offsetHeight/2}px`;
-        
-        for (let i = 0; i < 15; i++) {
-          const burst = document.createElement('div');
-          burst.className = 'confetti';
-          burst.style.position = 'absolute';
-          burst.style.animationDuration = `${Math.random() * 1 + 0.5}s`;
-          burst.style.color = `hsl(${Math.random() * 60 + 0}, 80%, 60%)`;
-          burst.textContent = ['★', '✿', '❀', '♥'][Math.floor(Math.random() * 4)];
-          burstContainer.appendChild(burst);
-        }
-        
-        document.body.appendChild(burstContainer);
-        
-        // Remove after animation
-        setTimeout(() => {
-          burstContainer.remove();
-        }, 1000);
         
         // Change button text temporarily
         const originalText = this.textContent;
-        this.textContent = 'Thank You';
+        this.textContent = 'Woohoo! 🎉';
         setTimeout(() => {
           this.textContent = originalText;
         }, 1500);
